@@ -19,3 +19,6 @@ No modules exist yet. This repository is the Week 1 project skeleton.
 - Damage classifier: assesses visible artifact damage.
 - Restoration planner: builds a restoration plan from the assessment.
 - Provenance graph: records the artifact's history and restoration work.
+## Version control
+
+Versioning starts with the skeleton so each project decision can be traced from the beginning.

@@ -9,22 +9,27 @@ No modules exist yet. This repository is the Week 1 project skeleton.
 - Damage classifier: not started
 - Restoration planner: not started
 - Provenance graph: not started
+
 ## Project structure
 
 - `data/`: artifact inputs and project data.
 - `src/`: project source code.
 - `tests/`: project tests.
+
 ## Planned modules
 
 - Damage classifier: assesses visible artifact damage.
 - Restoration planner: builds a restoration plan from the assessment.
 - Provenance graph: records the artifact's history and restoration work.
+
 ## Version control
 
 Versioning starts with the skeleton so each project decision can be traced from the beginning.
+
 ## Modularity
 
 The search algorithm will stay separate from the artifact problem it solves so each part can be understood, tested, and reused on its own.
+
 ## Week 1 scope
 
 This week only sets up the repository. The modules are planned but not implemented yet.

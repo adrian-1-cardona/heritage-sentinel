@@ -17,3 +17,4 @@ No modules exist yet. This repository is the Week 1 project skeleton.
 ## Planned modules
 
 - Damage classifier: assesses visible artifact damage.
+- Restoration planner: builds a restoration plan from the assessment.

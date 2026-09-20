@@ -4,10 +4,10 @@ Heritage Sentinel is a small AI system that assesses damage to a cultural herita
 
 ## Status
 
-No modules exist yet. This repository is the Week 1 project skeleton.
+The Week 1 skeleton is complete, and the Week 2 restoration planner is implemented.
 
 - Damage classifier: not started
-- Restoration planner: not started
+- Restoration planner: implemented with problem-agnostic BFS
 - Provenance graph: not started
 
 ## Project structure

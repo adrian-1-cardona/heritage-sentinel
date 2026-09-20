@@ -30,6 +30,6 @@ Versioning starts with the skeleton so each project decision can be traced from 
 
 The search algorithm will stay separate from the artifact problem it solves so each part can be understood, tested, and reused on its own.
 
-## Week 1 scope
+## Current scope
 
-This week only sets up the repository. The modules are planned but not implemented yet.
+Week 1 set up the repository. Week 2 adds the generic BFS planner, the restoration problem, and a second problem used to check modularity.

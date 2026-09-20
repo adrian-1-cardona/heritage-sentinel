@@ -37,3 +37,14 @@ The search algorithm will stay separate from the artifact problem it solves so e
 ## Current scope
 
 Week 1 set up the repository. Week 2 adds the generic BFS planner, the restoration problem, and a second problem used to check modularity.
+## Run the planner
+
+```bash
+python3 src/main.py
+```
+
+Expected output:
+
+```text
+Restoration plan: ['stabilize_base', 'seal_crack', 'clean_surface', 'restore_pigment']
+```

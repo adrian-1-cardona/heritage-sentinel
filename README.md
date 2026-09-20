@@ -20,11 +20,11 @@ The Week 1 skeleton is complete, and the Week 2 restoration planner is implement
 - `tests/`: project tests.
 - `NOTES.md`: modularity reflection.
 
-## Planned modules
+## Modules
 
-- Damage classifier: assesses visible artifact damage.
-- Restoration planner: builds a restoration plan from the assessment.
-- Provenance graph: records the artifact's history and restoration work.
+- Damage classifier: will assess visible artifact damage.
+- Restoration planner: finds valid action orders with BFS.
+- Provenance graph: will record the artifact's history and restoration work.
 
 ## Version control
 
@@ -32,11 +32,12 @@ Versioning starts with the skeleton so each project decision can be traced from 
 
 ## Modularity
 
-The search algorithm will stay separate from the artifact problem it solves so each part can be understood, tested, and reused on its own.
+The search algorithm stays separate from the problem it solves so each part can be understood, tested, and reused on its own.
 
 ## Current scope
 
 Week 1 set up the repository. Week 2 adds the generic BFS planner, the restoration problem, and a second problem used to check modularity.
+
 ## Run the planner
 
 ```bash
@@ -48,6 +49,7 @@ Expected output:
 ```text
 Restoration plan: ['stabilize_base', 'seal_crack', 'clean_surface', 'restore_pigment']
 ```
+
 ## Checked results
 
 The restoration plan reaches the goal with every prerequisite completed first. For the modularity check, I changed only `main.py` to use `morning_graph` and got `['pack_lunch', 'fill_bottle', 'leave_home']`. `planner.py` stayed unchanged, and `main.py` was switched back to the restoration problem afterward.

@@ -25,3 +25,6 @@ Versioning starts with the skeleton so each project decision can be traced from 
 ## Modularity
 
 The search algorithm will stay separate from the artifact problem it solves so each part can be understood, tested, and reused on its own.
+## Week 1 scope
+
+This week only sets up the repository. The modules are planned but not implemented yet.

@@ -9,3 +9,6 @@ No modules exist yet. This repository is the Week 1 project skeleton.
 - Damage classifier: not started
 - Restoration planner: not started
 - Provenance graph: not started
+## Project structure
+
+- `data/`: artifact inputs and project data.

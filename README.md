@@ -13,8 +13,12 @@ The Week 1 skeleton is complete, and the Week 2 restoration planner is implement
 ## Project structure
 
 - `data/`: artifact inputs and project data.
-- `src/`: project source code.
+- `src/restoration_graph.py`: restoration actions, prerequisites, and states.
+- `src/planner.py`: problem-agnostic BFS.
+- `src/main.py`: runs the restoration planner.
+- `src/morning_graph.py`: second problem used for the modularity check.
 - `tests/`: project tests.
+- `NOTES.md`: modularity reflection.
 
 ## Planned modules
 

@@ -22,3 +22,6 @@ No modules exist yet. This repository is the Week 1 project skeleton.
 ## Version control
 
 Versioning starts with the skeleton so each project decision can be traced from the beginning.
+## Modularity
+
+The search algorithm will stay separate from the artifact problem it solves so each part can be understood, tested, and reused on its own.

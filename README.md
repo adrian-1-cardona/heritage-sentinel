@@ -13,3 +13,4 @@ No modules exist yet. This repository is the Week 1 project skeleton.
 
 - `data/`: artifact inputs and project data.
 - `src/`: project source code.
+- `tests/`: project tests.

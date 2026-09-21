@@ -59,3 +59,12 @@ The restoration plan reaches the goal with every prerequisite completed first. F
 - [x] `planner.py` finds a valid plan for the statue problem.
 - [x] `planner.py` finds a valid plan for the second toy problem without being changed.
 - [x] `NOTES.md` includes my modularity reflection.
+## Suggested rubric (20 pts)
+
+| Item | Points |
+| --- | ---: |
+| Repo structure, README, tagged commit | 5 |
+| Planner finds a valid sequence for the statue problem | 6 |
+| Planner works unmodified on a second problem | 4 |
+| Reflection paragraph shows real understanding | 3 |
+| Code committed with clear messages | 2 |

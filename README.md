@@ -53,12 +53,14 @@ Restoration plan: ['stabilize_base', 'seal_crack', 'clean_surface', 'restore_pig
 ## Checked results
 
 The restoration plan reaches the goal with every prerequisite completed first. For the modularity check, I changed only `main.py` to use `morning_graph` and got `['pack_lunch', 'fill_bottle', 'leave_home']`. `planner.py` stayed unchanged, and `main.py` was switched back to the restoration problem afterward.
+
 ## Submission checklist
 
 - [x] Repository includes `data/`, `src/`, `tests/`, and `README.md`, with the skeleton commit tagged `v0.1-skeleton`.
 - [x] `planner.py` finds a valid plan for the statue problem.
 - [x] `planner.py` finds a valid plan for the second toy problem without being changed.
 - [x] `NOTES.md` includes my modularity reflection.
+
 ## Suggested rubric (20 pts)
 
 | Item | Points |

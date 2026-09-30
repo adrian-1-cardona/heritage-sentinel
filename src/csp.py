@@ -1,6 +1,5 @@
-# csp.py — generic CSP solver. No domain-specific knowledge allowed here.
+# csp.py — generic CSP solver. No statues, cracks, or pigment allowed here.
 import random
-
 
 def consistent(assignment, constraints):
     """False if any constraint whose variables are all assigned is violated."""
@@ -13,25 +12,24 @@ def consistent(assignment, constraints):
 
 def backtracking_search(variables, domains, constraints, seed=0, all_solutions=False):
     """Return a list of solutions (dicts). One solution unless all_solutions=True.
-    An empty list means no solution exists.
-    """
+    An empty list means no solution exists."""
     rng = random.Random(seed)
     solutions = []
 
     def backtrack(assignment):
         if len(assignment) == len(variables):
             solutions.append(dict(assignment))
-            return not all_solutions
+            return not all_solutions        # stop early unless collecting all
 
         var = next(v for v in variables if v not in assignment)
         values = list(domains[var])
-        rng.shuffle(values)
+        rng.shuffle(values)                 # seeded tie-breaking
 
         for value in values:
-            assignment[var] = value
-            if consistent(assignment, constraints) and backtrack(assignment):
-                return True
-            del assignment[var]
+            # TODO: assign `value` to `var`. If the assignment is still
+            # consistent, recurse; if the recursion returns True, return True.
+            # Otherwise undo the assignment and try the next value.
+            ...
         return False
 
     backtrack({})

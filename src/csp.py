@@ -26,10 +26,10 @@ def backtracking_search(variables, domains, constraints, seed=0, all_solutions=F
         rng.shuffle(values)                 # seeded tie-breaking
 
         for value in values:
-            # TODO: assign `value` to `var`. If the assignment is still
-            # consistent, recurse; if the recursion returns True, return True.
-            # Otherwise undo the assignment and try the next value.
-            ...
+            assignment[var] = value
+            if consistent(assignment, constraints) and backtrack(assignment):
+                return True
+            del assignment[var]
         return False
 
     backtrack({})

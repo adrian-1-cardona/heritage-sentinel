@@ -1,13 +1,10 @@
 # Heritage Sentinel
-
 Heritage Sentinel is a small AI system that assesses damage to a cultural heritage artifact with a damage classifier, plans its restoration with a restoration planner, and tracks its history with a provenance graph.
 
 ## Status
-
 just finished lab p3
 
 ## Project structure
-
 - `data/`: artifact inputs and project data.
 - `src/restoration_graph.py`: restoration actions, prerequisites, and states.
 - `src/planner.py`: problem-agnostic BFS.
@@ -17,7 +14,6 @@ just finished lab p3
 - `NOTES.md`: modularity reflection.
 
 ## Modules
-
 - Damage classifier: will assess visible artifact damage.
 - Restoration planner: finds valid action orders with BFS.
 - Provenance graph: will record the artifact's history and restoration work.

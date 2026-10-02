@@ -4,11 +4,7 @@ Heritage Sentinel is a small AI system that assesses damage to a cultural herita
 
 ## Status
 
-The Week 1 skeleton is complete, and the Week 2 restoration planner is implemented.
-
-- Damage classifier: not started
-- Restoration planner: implemented with problem-agnostic BFS
-- Provenance graph: not started
+just finished lab p3
 
 ## Project structure
 
@@ -26,38 +22,13 @@ The Week 1 skeleton is complete, and the Week 2 restoration planner is implement
 - Restoration planner: finds valid action orders with BFS.
 - Provenance graph: will record the artifact's history and restoration work.
 
-## Version control
-
-Versioning starts with the skeleton so each project decision can be traced from the beginning.
-
-## Modularity
-
-The search algorithm stays separate from the problem it solves so each part can be understood, tested, and reused on its own.
-
-## Current scope
-
-Week 1 set up the repository. Week 2 adds the generic BFS planner, the restoration problem, and a second problem used to check modularity.
 
 ## Run the planner
-
 ```bash
 python3 src/main.py
 ```
 
 Expected output:
-
 ```text
 Restoration plan: ['stabilize_base', 'seal_crack', 'clean_surface', 'restore_pigment']
 ```
-
-## Checked results
-
-The restoration plan reaches the goal with every prerequisite completed first. For the modularity check, I changed only `main.py` to use `morning_graph` and got `['pack_lunch', 'fill_bottle', 'leave_home']`. `planner.py` stayed unchanged, and `main.py` was switched back to the restoration problem afterward.
-
-## Submission checklist
-
-- [x] Repository includes `data/`, `src/`, `tests/`, and `README.md`, with the skeleton commit tagged `v0.1-skeleton`.
-- [x] `planner.py` finds a valid plan for the statue problem.
-- [x] `planner.py` finds a valid plan for the second toy problem without being changed.
-- [x] `NOTES.md` includes my modularity reflection.
-

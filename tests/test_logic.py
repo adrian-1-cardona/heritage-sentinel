@@ -170,3 +170,11 @@ def test_alternative_proofs_depend_on_clause_order():
     assert why["goal"] != reversed_why["goal"]
     assert explain("goal", why) == ["goal  because:", "  a  (given)"]
     assert explain("goal", reversed_why) == ["goal  because:", "  b  (given)"]
+
+
+# Require both custom-rule premises; either changed field is a valid near-miss.
+def test_corrosion_on_ceramic_rule_and_near_misses():
+    report = REPORTS["r12"]
+    assert validate(report)[1] == ["invalid:corrosion_on_ceramic"]
+    assert validate({**report, "material": "metal"}) == (True, [], {})
+    assert validate({**report, "damage": ["fading"]}) == (True, [], {})

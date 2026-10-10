@@ -29,3 +29,5 @@ Part B, termination: each changing pass strictly grows the known-symbol set, and
 Part B, sorted premises: sorting gives proof branches a stable order despite randomized set iteration across Python processes, keeping rejection logs reproducible like the Lab 3 variable-order fix.
 
 Proof ordering: the scratch experiment with a → goal and b → goal produced the same conclusions but different first-fired proofs after reversing the rules, so an audited log needs the rule version and a stable clause order to reproduce its recorded justification.
+
+Custom rule 1 rejects corrosion on ceramic (r12): this report vocabulary treats corrosion as metal deterioration, so a corroding metal fitting should be reported as metal rather than as its ceramic substrate. Changing the material to metal or the damage to fading gives accepted near-misses.

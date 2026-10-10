@@ -24,3 +24,39 @@ def explain(symbol, why, depth=0):
     for premise in sorted(premises):
         lines.extend(explain(premise, why, depth + 1))
     return lines
+
+
+# Keep only inclusion-minimal fact sets, in a reproducible order.
+def _minimal_supports(supports):
+    unique = set(supports)
+    return sorted(
+        (support for support in unique if not any(other < support for other in unique)),
+        key=lambda support: (len(support), sorted(support)),
+    )
+
+
+# Work backward to enumerate minimal fact sets that can establish a goal.
+def backward_chain(goal, clauses, fact_symbols):
+    by_conclusion = {}
+    for premises, conclusion in clauses:
+        by_conclusion.setdefault(conclusion, []).append(premises)
+    fact_symbols = set(fact_symbols)
+
+    # Reject cyclic proof branches while retaining independent routes to the goal.
+    def prove(symbol, ancestors):
+        if symbol in ancestors:
+            return []
+        supports = [frozenset({symbol})] if symbol in fact_symbols else []
+        for premises in by_conclusion.get(symbol, []):
+            combinations = [frozenset()]
+            for premise in sorted(premises):
+                choices = prove(premise, ancestors | {symbol})
+                combinations = _minimal_supports(
+                    left | right for left in combinations for right in choices
+                )
+                if not combinations:
+                    break
+            supports.extend(combinations)
+        return _minimal_supports(supports)
+
+    return prove(goal, set())

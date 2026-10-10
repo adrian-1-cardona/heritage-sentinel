@@ -10,3 +10,4 @@
 {"id": "r10", "material": "metal", "damage": []}
 {"id": "r11", "material": "marble", "damage": ["crack"], "severity": "minor"}
 {"id": "r12", "material": "ceramic", "damage": ["corrosion"], "severity": "minor"}
+{"id": "r13", "material": "textile", "damage": ["crack"], "severity": "minor"}

@@ -178,3 +178,11 @@ def test_corrosion_on_ceramic_rule_and_near_misses():
     assert validate(report)[1] == ["invalid:corrosion_on_ceramic"]
     assert validate({**report, "material": "metal"}) == (True, [], {})
     assert validate({**report, "damage": ["fading"]}) == (True, [], {})
+
+
+# Changing either the textile material or fracture damage avoids this constraint.
+def test_crack_on_textile_rule_and_near_misses():
+    report = REPORTS["r13"]
+    assert validate(report)[1] == ["invalid:crack_on_textile"]
+    assert validate({**report, "material": "stone"}) == (True, [], {})
+    assert validate({**report, "damage": ["fading"]}) == (True, [], {})

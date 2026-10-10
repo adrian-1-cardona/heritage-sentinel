@@ -23,4 +23,6 @@ CLAUSES = [
     rule("invalid:structural_risk_marked_minor", "structural_risk", "severity_minor"),
     # Corrosion describes a metal component, rather than a ceramic substrate.
     rule("invalid:corrosion_on_ceramic", "damage_corrosion", "material_ceramic"),
+    # Flexible textile fibers tear; cracks describe a rigid material's fracture.
+    rule("invalid:crack_on_textile", "damage_crack", "material_textile"),
 ]

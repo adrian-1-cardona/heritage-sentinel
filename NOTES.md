@@ -31,3 +31,7 @@ Part B, sorted premises: sorting gives proof branches a stable order despite ran
 Proof ordering: the scratch experiment with a → goal and b → goal produced the same conclusions but different first-fired proofs after reversing the rules, so an audited log needs the rule version and a stable clause order to reproduce its recorded justification.
 
 Custom rule 1 rejects corrosion on ceramic (r12): this report vocabulary treats corrosion as metal deterioration, so a corroding metal fitting should be reported as metal rather than as its ceramic substrate. Changing the material to metal or the damage to fading gives accepted near-misses.
+
+Custom rule 2 rejects cracks on textile (r13): for this lab, crack means fracture of a rigid substrate, while flexible fabric tears; a cracked coating on fabric should describe the coating's material. Changing the material to stone or the damage to fading gives accepted near-misses.
+
+Part E: positive Horn clauses can require existing facts but cannot test the absence of every damage fact, so severity_major alone cannot establish that no damage was listed. Schema conversion could emit an explicit no_damage fact for an empty list, costing an extra closed-world assumption and consistency checks; alternatively, adding negation requires a different inference model and loses simple monotonic reasoning when reports change.

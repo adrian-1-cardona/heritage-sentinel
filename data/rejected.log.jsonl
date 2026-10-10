@@ -6,3 +6,4 @@
 {"id": "r10", "reasons": ["schema: missing field 'severity'"], "proofs": {}}
 {"id": "r11", "reasons": ["schema: unknown material 'marble'"], "proofs": {}}
 {"id": "r12", "reasons": ["invalid:corrosion_on_ceramic"], "proofs": {"invalid:corrosion_on_ceramic": ["invalid:corrosion_on_ceramic  because:", "  damage_corrosion  (given)", "  material_ceramic  (given)"]}}
+{"id": "r13", "reasons": ["invalid:crack_on_textile"], "proofs": {"invalid:crack_on_textile": ["invalid:crack_on_textile  because:", "  damage_crack  (given)", "  material_textile  (given)"]}}

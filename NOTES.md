@@ -5,3 +5,19 @@ LabP2: test_no_solution_returns_none caught an assumption I had wrong: bfs_searc
 LabP3: When I kept VARIABLES as list(ACTIONS.keys()), I got the same plan all three times. When I changed it to list(set(ACTIONS.keys())), six separate runs gave me four different valid plans even though the seed stayed 42. The set changed order between Python processes because string hashes are randomized, and that changed which variables the solver tried first. The seed only controlled the shuffles inside backtracking_search, not the set order, so changing VARIABLES back to a list made the full run reproducible.
 
 The Lab 2 oracle was correct for the rules I had then because it checked prerequisites, duplicates, and completeness. Lab 3 added the tranche rule, so the old oracle accepted stabilize_base followed by seal_crack even though those first two actions cost 5 and the cap is 4. This showed me that tests can get stale when requirements change: passing old tests only proves the old rules, so tests and their helper functions have to change with the specification.
+
+Lab 4 predictions, recorded before running validation:
+
+| Report | Expected result | Reason |
+| --- | --- | --- |
+| r1 | Accept | Structural damage is marked major. |
+| r2 | Reject | Structural risk is marked minor. |
+| r3 | Accept | Rot is compatible with wood. |
+| r4 | Reject | Rot is incompatible with inorganic material. |
+| r5 | Accept | Corrosion is compatible with metal. |
+| r6 | Reject | Corrosion is incompatible with organic material. |
+| r7 | Accept | Empty damage agrees with severity none. |
+| r8 | Reject | Listed damage contradicts severity none. |
+| r9 | Reject | Rot on inorganic material and structural risk marked minor. |
+| r10 | Reject | Schema error: missing severity. |
+| r11 | Reject | Schema error: unknown material. |

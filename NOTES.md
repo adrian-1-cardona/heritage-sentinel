@@ -35,3 +35,16 @@ Custom rule 1 rejects corrosion on ceramic (r12): this report vocabulary treats 
 Custom rule 2 rejects cracks on textile (r13): for this lab, crack means fracture of a rigid substrate, while flexible fabric tears; a cracked coating on fabric should describe the coating's material. Changing the material to stone or the damage to fading gives accepted near-misses.
 
 Part E: positive Horn clauses can require existing facts but cannot test the absence of every damage fact, so severity_major alone cannot establish that no damage was listed. Schema conversion could emit an explicit no_damage fact for an empty list, costing an extra closed-world assumption and consistency checks; alternatively, adding negation requires a different inference model and loses simple monotonic reasoning when reports change.
+
+Backward-chaining extension: `backward_chain` recursively expands a goal into alternative fact supports, stops cyclic branches, and removes supports containing a smaller sufficient set. The generator supplies mandatory schema fields, rejects conflicting materials/severities, and chooses a report with the fewest damage entries; removing any listed damage stops its target rule from firing.
+
+| Generated goal | Hand-written trigger | Comparison |
+| --- | --- | --- |
+| invalid:corrosion_on_ceramic | r12 | Same material, damage, and severity. |
+| invalid:corrosion_on_organic | r6 | Same material, damage, and severity. |
+| invalid:crack_on_textile | r13 | Same material, damage, and severity. |
+| invalid:none_but_damaged | r8 | Generated stone/corrosion instead of ceramic/fading; both have one damage and severity none. |
+| invalid:rot_on_inorganic | r4 | Generated ceramic instead of stone; both derive inorganic. |
+| invalid:structural_risk_marked_minor | r2 | Same material, damage, and severity. |
+
+No rejection rule was missed by the hand-written reports: both sets cover all six goals. The final hand-written batch has 13 reports and returns accepted=4 rejected=9; generated reports are saved separately in `data/generated_reports.jsonl`.

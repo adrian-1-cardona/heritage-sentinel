@@ -1,11 +1,12 @@
 import json
 from pathlib import Path
 import random
+import re
 
 import pytest
 
 from logic import explain, forward_chain
-from report_rules import CLAUSES
+from report_rules import CLAUSES, DAMAGE, MATERIALS, SEVERITIES
 from validate import to_facts, validate
 import validate as validation
 
@@ -186,3 +187,23 @@ def test_crack_on_textile_rule_and_near_misses():
     assert validate(report)[1] == ["invalid:crack_on_textile"]
     assert validate({**report, "material": "stone"}) == (True, [], {})
     assert validate({**report, "damage": ["fading"]}) == (True, [], {})
+
+
+# Domain vocabulary belongs to the knowledge base, never the inference engine.
+def test_logic_has_no_heritage_vocabulary():
+    source = (Path(__file__).resolve().parents[1] / "src/logic.py").read_text()
+    words = set(re.findall(r"[A-Za-z]+", source))
+    assert not words & (MATERIALS | DAMAGE | SEVERITIES)
+
+
+# Generated witnesses expose the removal of every integrity constraint.
+@pytest.mark.parametrize("goal", sorted({
+    goal for _, goal in CLAUSES if goal.startswith("invalid:")
+}))
+def test_generated_witness_catches_each_deleted_constraint(goal, monkeypatch):
+    from generate_reports import generate_reports
+
+    report = generate_reports()[goal]
+    assert goal in validate(report)[1]
+    monkeypatch.setattr(validation, "CLAUSES", [clause for clause in CLAUSES if clause[1] != goal])
+    assert goal not in validate(report)[1]

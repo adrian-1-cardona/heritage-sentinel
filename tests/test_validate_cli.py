@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -52,3 +53,31 @@ def test_log_cannot_overwrite_reports(tmp_path):
     with pytest.raises(ValueError, match="different paths"):
         main(source, source)
     assert source.read_text() == "original\n"
+
+
+# Final totals and checked-in proofs must reproduce across randomized hash seeds.
+def test_final_log_is_reproducible(tmp_path):
+    expected = (ROOT / "data/rejected.log.jsonl").read_text()
+    for seed in ("1", "42", "123"):
+        log = tmp_path / f"rejected-{seed}.jsonl"
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "src/validate.py"),
+             str(ROOT / "data/reports.jsonl"), str(log)],
+            env={**os.environ, "PYTHONHASHSEED": seed},
+            capture_output=True, text=True, check=True, timeout=5,
+        )
+        assert result.stdout == "accepted=4 rejected=9\n"
+        assert log.read_text() == expected
+
+
+# Keep the cycle check isolated so a termination regression cannot hang pytest.
+def test_cycle_terminates_with_process_timeout():
+    result = subprocess.run(
+        [sys.executable, "-c",
+         "from logic import forward_chain; "
+         "assert forward_chain({'a'}, [(frozenset({'a'}), 'b'), "
+         "(frozenset({'b'}), 'a')])[0] == {'a', 'b'}"],
+        env={**os.environ, "PYTHONPATH": str(ROOT / "src")},
+        capture_output=True, text=True, check=True, timeout=5,
+    )
+    assert result.returncode == 0

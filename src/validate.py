@@ -1,3 +1,7 @@
+import json
+from pathlib import Path
+import sys
+
 from logic import explain, forward_chain
 from report_rules import CLAUSES, DAMAGE, MATERIALS, SEVERITIES
 
@@ -40,3 +44,33 @@ def validate(report):
     reasons = sorted(symbol for symbol in known if symbol.startswith("invalid:"))
     proofs = {reason: explain(reason, why) for reason in reasons}
     return not reasons, reasons, proofs
+
+
+# Validate each JSON line and record every rejection without stopping the batch.
+def main(path="data/reports.jsonl", out="data/rejected.log.jsonl"):
+    if Path(path).resolve() == Path(out).resolve():
+        raise ValueError("input and rejection log must use different paths")
+    accepted, rejected = 0, 0
+    with open(path, encoding="utf-8") as source, open(out, "w", encoding="utf-8") as log:
+        for number, line in enumerate(source, 1):
+            try:
+                report = json.loads(line)
+            except json.JSONDecodeError:
+                report = None
+                ok, reasons, proofs = False, [f"schema: invalid JSON on line {number}"], {}
+            else:
+                ok, reasons, proofs = validate(report)
+            if ok:
+                accepted += 1
+            else:
+                rejected += 1
+                report_id = report.get("id") if isinstance(report, dict) else None
+                log.write(json.dumps({
+                    "id": report_id, "reasons": reasons, "proofs": proofs
+                }) + "\n")
+    print(f"accepted={accepted} rejected={rejected}")
+    return accepted, rejected
+
+
+if __name__ == "__main__":
+    main(*sys.argv[1:])

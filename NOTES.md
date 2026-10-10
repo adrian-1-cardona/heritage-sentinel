@@ -21,3 +21,5 @@ Lab 4 predictions, recorded before running validation:
 | r9 | Reject | Rot on inorganic material and structural risk marked minor. |
 | r10 | Reject | Schema error: missing severity. |
 | r11 | Reject | Schema error: unknown material. |
+
+Lab 4 self-check: the starter run returned accepted=4 rejected=7, matching all predictions above; there were no disagreements. The r2 proof matches the supplied example, r9 has both semantic violations, and r10/r11 have schema reasons with no logical proofs.

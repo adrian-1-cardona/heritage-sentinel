@@ -23,3 +23,9 @@ Lab 4 predictions, recorded before running validation:
 | r11 | Reject | Schema error: unknown material. |
 
 Lab 4 self-check: the starter run returned accepted=4 rejected=7, matching all predictions above; there were no disagreements. The r2 proof matches the supplied example, r9 has both semantic violations, and r10/r11 have schema reasons with no logical proofs.
+
+Part B, termination: each changing pass strictly grows the known-symbol set, and only finitely many initial facts and clause conclusions can enter it. Once no new symbol can be added, the loop stops, including when rules form cycles.
+
+Part B, sorted premises: sorting gives proof branches a stable order despite randomized set iteration across Python processes, keeping rejection logs reproducible like the Lab 3 variable-order fix.
+
+Proof ordering: the scratch experiment with a → goal and b → goal produced the same conclusions but different first-fired proofs after reversing the rules, so an audited log needs the rule version and a stable clause order to reproduce its recorded justification.

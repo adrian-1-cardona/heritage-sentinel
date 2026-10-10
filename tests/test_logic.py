@@ -1,11 +1,13 @@
 import json
 from pathlib import Path
+import random
 
 import pytest
 
 from logic import explain, forward_chain
 from report_rules import CLAUSES
 from validate import to_facts, validate
+import validate as validation
 
 
 REPORTS = {
@@ -134,3 +136,37 @@ def test_proofs_bottom_out_in_given_facts():
     ]
     leaves = [line for line in lines if "because" not in line]
     assert leaves and all("(given)" in line for line in leaves)
+
+
+# Shuffling clauses must preserve conclusions, even for multiple violations.
+def test_clause_order_irrelevant():
+    facts = to_facts(REPORTS["r9"])
+    expected, _ = forward_chain(facts, CLAUSES)
+    for seed in range(20):
+        shuffled = CLAUSES[:]
+        random.Random(seed).shuffle(shuffled)
+        assert forward_chain(facts, shuffled)[0] == expected
+
+
+# Removing a constraint changes the result; restoring it must restore rejection.
+def test_deleting_a_rule_is_caught():
+    original = validation.CLAUSES
+    try:
+        validation.CLAUSES = [
+            clause for clause in original if clause[1] != "invalid:rot_on_inorganic"
+        ]
+        assert validate(REPORTS["r4"]) == (True, [], {})
+    finally:
+        validation.CLAUSES = original
+    assert validate(REPORTS["r4"])[1] == ["invalid:rot_on_inorganic"]
+
+
+# First-fired proofs can differ when alternative rules derive the same goal.
+def test_alternative_proofs_depend_on_clause_order():
+    clauses = [(frozenset({"a"}), "goal"), (frozenset({"b"}), "goal")]
+    known, why = forward_chain({"a", "b"}, clauses)
+    reversed_known, reversed_why = forward_chain({"a", "b"}, clauses[::-1])
+    assert known == reversed_known
+    assert why["goal"] != reversed_why["goal"]
+    assert explain("goal", why) == ["goal  because:", "  a  (given)"]
+    assert explain("goal", reversed_why) == ["goal  because:", "  b  (given)"]

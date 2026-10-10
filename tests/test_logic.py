@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from logic import explain, forward_chain
+from report_rules import CLAUSES
 from validate import to_facts, validate
 
 
@@ -79,3 +80,57 @@ def test_empty_premises_and_unseeded_cycle():
 def test_clause_iterator():
     clauses = iter([(frozenset({"b"}), "c"), (frozenset({"a"}), "b")])
     assert forward_chain({"a"}, clauses)[0] == {"a", "b", "c"}
+
+
+# Every clause must fire with all premises and require each individual premise.
+@pytest.mark.parametrize("clause", CLAUSES, ids=lambda clause: str(clause))
+def test_every_clause_fires(clause):
+    premises, conclusion = clause
+    known, why = forward_chain(premises, [clause])
+    assert conclusion in known and why[conclusion] == premises
+    for premise in premises:
+        assert conclusion not in forward_chain(premises - {premise}, [clause])[0]
+
+
+# Accepted reports should have neither reasons nor rejection proofs.
+@pytest.mark.parametrize("rid", ["r1", "r3", "r5", "r7"])
+def test_valid_reports_accepted(rid):
+    assert validate(REPORTS[rid]) == (True, [], {})
+
+
+# Each starter constraint has a report that triggers it in isolation.
+@pytest.mark.parametrize("rid,reason", [
+    ("r2", "invalid:structural_risk_marked_minor"),
+    ("r4", "invalid:rot_on_inorganic"),
+    ("r6", "invalid:corrosion_on_organic"),
+    ("r8", "invalid:none_but_damaged"),
+])
+def test_each_rule_fires_alone(rid, reason):
+    ok, reasons, proofs = validate(REPORTS[rid])
+    assert not ok and reasons == [reason]
+    assert set(proofs) == {reason}
+
+
+# A report can violate more than one constraint without hiding either failure.
+def test_multiple_violations_all_reported():
+    ok, reasons, proofs = validate(REPORTS["r9"])
+    assert not ok
+    assert reasons == [
+        "invalid:rot_on_inorganic", "invalid:structural_risk_marked_minor"
+    ]
+    assert list(proofs) == reasons
+
+
+# Rejection proofs must match the expected derivation and end in given facts.
+def test_proofs_bottom_out_in_given_facts():
+    reason = "invalid:structural_risk_marked_minor"
+    lines = validate(REPORTS["r2"])[2][reason]
+    assert lines == [
+        f"{reason}  because:",
+        "  severity_minor  (given)",
+        "  structural_risk  because:",
+        "    damage_crack  (given)",
+        "    damage_loose_base  (given)",
+    ]
+    leaves = [line for line in lines if "because" not in line]
+    assert leaves and all("(given)" in line for line in leaves)

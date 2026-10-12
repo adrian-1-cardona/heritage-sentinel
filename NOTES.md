@@ -10,9 +10,7 @@ Lab 4 guesses, before I ran it: accept r1, r3, r5, r7, reject the rest, r9 with 
 
 Lab 4 self check: the starter run gave accepted=4 rejected=7 and matched every guess, so no disagreements. r2's proof matched the lab's example and the schema errors came back with no proofs, which is right since a missing field is not the rules' job.
 
-Part B, why it terminates: known only grows, and it is capped at my facts plus one symbol per clause conclusion, so eventually a pass adds nothing and the loop quits. Cycles die at the "conclusion not in known" check.
-
-Part B, why explain sorts: set order shifts with hash randomization between runs, same trap as VARIABLES in Lab 3, so sorting keeps the same rejection printing the same proof.
+Part B, why it terminates: known only grows, and it is capped at my facts plus one symbol per clause conclusion, so eventually a pass adds nothing and the loop quits. Cycles die at the "conclusion not in known" check. Set order shifts with hash randomization between runs, same trap as VARIABLES in Lab 3, so sorting keeps the same rejection printing the same proof.
 
 Proof ordering: two rules deriving one goal gave me identical known but different why depending on which fired first, so an audited log needs the rule version and clause order pinned down.
 

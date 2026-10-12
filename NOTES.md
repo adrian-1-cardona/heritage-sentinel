@@ -6,45 +6,18 @@ LabP3: When I kept VARIABLES as list(ACTIONS.keys()), I got the same plan all th
 
 The Lab 2 oracle was correct for the rules I had then because it checked prerequisites, duplicates, and completeness. Lab 3 added the tranche rule, so the old oracle accepted stabilize_base followed by seal_crack even though those first two actions cost 5 and the cap is 4. This showed me that tests can get stale when requirements change: passing old tests only proves the old rules, so tests and their helper functions have to change with the specification.
 
-Lab 4 predictions, recorded before running validation:
+Lab 4 predictions, before I ran anything: accept r1, r3, r5, r7 and reject the other seven, with r9 picking up two reasons and r10 and r11 failing on schema instead of logic.
 
-| Report | Expected result | Reason |
-| --- | --- | --- |
-| r1 | Accept | Structural damage is marked major. |
-| r2 | Reject | Structural risk is marked minor. |
-| r3 | Accept | Rot is compatible with wood. |
-| r4 | Reject | Rot is incompatible with inorganic material. |
-| r5 | Accept | Corrosion is compatible with metal. |
-| r6 | Reject | Corrosion is incompatible with organic material. |
-| r7 | Accept | Empty damage agrees with severity none. |
-| r8 | Reject | Listed damage contradicts severity none. |
-| r9 | Reject | Rot on inorganic material and structural risk marked minor. |
-| r10 | Reject | Schema error: missing severity. |
-| r11 | Reject | Schema error: unknown material. |
+Lab 4 self-check: the starter run gave accepted=4 rejected=7 and matched all eleven guesses, so no disagreements to settle. r2's proof printed exactly like the lab's example, r9 listed both violations, and r10 and r11 came back with schema reasons and empty proofs, which is what I wanted since a missing field is not something the rules should be reasoning about.
 
-Lab 4 self-check: the starter run returned accepted=4 rejected=7, matching all predictions above; there were no disagreements. The r2 proof matches the supplied example, r9 has both semantic violations, and r10/r11 have schema reasons with no logical proofs.
+Part B, why it terminates: known only ever grows, and it is capped at my starting facts plus one symbol per clause conclusion, so every pass that sets changed adds at least one symbol to a finite set and eventually nothing new fits. Cycles like a implies b implies a die at the "conclusion not in known" check.
 
-Part B, termination: each changing pass strictly grows the known-symbol set, and only finitely many initial facts and clause conclusions can enter it. Once no new symbol can be added, the loop stops, including when rules form cycles.
+Part B, why explain sorts: iterating a set hands me whatever order hash randomization picked that run, same trap as VARIABLES in Lab 3, so sorted(premises) pins the branch order and the same rejection always prints the same proof.
 
-Part B, sorted premises: sorting gives proof branches a stable order despite randomized set iteration across Python processes, keeping rejection logs reproducible like the Lab 3 variable-order fix.
+Proof ordering: with two rules deriving the same goal, known stayed identical but why kept whichever fired first, so reversing the clause list flipped the proofs. The verdict is stable and the justification is not, so an audited log has to record the rule version and the clause order or I cannot reproduce the explanation I handed somebody months ago.
 
-Proof ordering: the scratch experiment with a → goal and b → goal produced the same conclusions but different first-fired proofs after reversing the rules, so an audited log needs the rule version and a stable clause order to reproduce its recorded justification.
+My two rules: r12 rejects corrosion on ceramic, because corrosion is a metal thing and a corroding fitting should be reported as metal rather than as the ceramic it sits in. r13 rejects cracks on textile, because fabric tears instead of fracturing. Both near-misses get accepted, so each rule really needs both premises.
 
-Custom rule 1 rejects corrosion on ceramic (r12): this report vocabulary treats corrosion as metal deterioration, so a corroding metal fitting should be reported as metal rather than as its ceramic substrate. Changing the material to metal or the damage to fading gives accepted near-misses.
+Part E: a Horn clause can only say "if all of these facts hold, conclude this," so there is no way to say "and no damage_ fact is present," and severity_major on its own tells me nothing about what is missing. I would either have to_facts emit a no_damage fact for an empty list, which is cheap but bakes a closed-world assumption into the schema layer, or add real negation, which costs monotonicity: adding a fact could then retract a conclusion, so forward_chain needs a proper fixpoint strategy and my termination argument above stops holding.
 
-Custom rule 2 rejects cracks on textile (r13): for this lab, crack means fracture of a rigid substrate, while flexible fabric tears; a cracked coating on fabric should describe the coating's material. Changing the material to stone or the damage to fading gives accepted near-misses.
-
-Part E: positive Horn clauses can require existing facts but cannot test the absence of every damage fact, so severity_major alone cannot establish that no damage was listed. Schema conversion could emit an explicit no_damage fact for an empty list, costing an extra closed-world assumption and consistency checks; alternatively, adding negation requires a different inference model and loses simple monotonic reasoning when reports change.
-
-Backward-chaining extension: `backward_chain` recursively expands a goal into alternative fact supports, stops cyclic branches, and removes supports containing a smaller sufficient set. The generator supplies mandatory schema fields, rejects conflicting materials/severities, and chooses a report with the fewest damage entries; removing any listed damage stops its target rule from firing.
-
-| Generated goal | Hand-written trigger | Comparison |
-| --- | --- | --- |
-| invalid:corrosion_on_ceramic | r12 | Same material, damage, and severity. |
-| invalid:corrosion_on_organic | r6 | Same material, damage, and severity. |
-| invalid:crack_on_textile | r13 | Same material, damage, and severity. |
-| invalid:none_but_damaged | r8 | Generated stone/corrosion instead of ceramic/fading; both have one damage and severity none. |
-| invalid:rot_on_inorganic | r4 | Generated ceramic instead of stone; both derive inorganic. |
-| invalid:structural_risk_marked_minor | r2 | Same material, damage, and severity. |
-
-No rejection rule was missed by the hand-written reports: both sets cover all six goals. The final hand-written batch has 13 reports and returns accepted=4 rejected=9; generated reports are saved separately in `data/generated_reports.jsonl`.
+Backward chaining: backward_chain expands a goal into minimal fact sets, cutting cyclic branches and dropping any support that contains a smaller one. It produced a trigger for all six rejection goals, matching my hand-written reports except it picked different materials for none_but_damaged and rot_on_inorganic, so I had not missed a rule. Final batch is 13 reports at accepted=4 rejected=9, and the generated ones live in data/generated_reports.jsonl.

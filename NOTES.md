@@ -6,18 +6,18 @@ LabP3: When I kept VARIABLES as list(ACTIONS.keys()), I got the same plan all th
 
 The Lab 2 oracle was correct for the rules I had then because it checked prerequisites, duplicates, and completeness. Lab 3 added the tranche rule, so the old oracle accepted stabilize_base followed by seal_crack even though those first two actions cost 5 and the cap is 4. This showed me that tests can get stale when requirements change: passing old tests only proves the old rules, so tests and their helper functions have to change with the specification.
 
-Lab 4 predictions, before I ran anything: accept r1, r3, r5, r7 and reject the other seven, with r9 picking up two reasons and r10 and r11 failing on schema instead of logic.
+Lab 4 guesses, before I ran it: accept r1, r3, r5, r7, reject the rest, r9 with two reasons, r10 and r11 on schema.
 
-Lab 4 self-check: the starter run gave accepted=4 rejected=7 and matched all eleven guesses, so no disagreements to settle. r2's proof printed exactly like the lab's example, r9 listed both violations, and r10 and r11 came back with schema reasons and empty proofs, which is what I wanted since a missing field is not something the rules should be reasoning about.
+Lab 4 self check: the starter run gave accepted=4 rejected=7 and matched every guess, so no disagreements. r2's proof matched the lab's example and the schema errors came back with no proofs, which is right since a missing field is not the rules' job.
 
-Part B, why it terminates: known only ever grows, and it is capped at my starting facts plus one symbol per clause conclusion, so every pass that sets changed adds at least one symbol to a finite set and eventually nothing new fits. Cycles like a implies b implies a die at the "conclusion not in known" check.
+Part B, why it terminates: known only grows, and it is capped at my facts plus one symbol per clause conclusion, so eventually a pass adds nothing and the loop quits. Cycles die at the "conclusion not in known" check.
 
-Part B, why explain sorts: iterating a set hands me whatever order hash randomization picked that run, same trap as VARIABLES in Lab 3, so sorted(premises) pins the branch order and the same rejection always prints the same proof.
+Part B, why explain sorts: set order shifts with hash randomization between runs, same trap as VARIABLES in Lab 3, so sorting keeps the same rejection printing the same proof.
 
-Proof ordering: with two rules deriving the same goal, known stayed identical but why kept whichever fired first, so reversing the clause list flipped the proofs. The verdict is stable and the justification is not, so an audited log has to record the rule version and the clause order or I cannot reproduce the explanation I handed somebody months ago.
+Proof ordering: two rules deriving one goal gave me identical known but different why depending on which fired first, so an audited log needs the rule version and clause order pinned down.
 
-My two rules: r12 rejects corrosion on ceramic, because corrosion is a metal thing and a corroding fitting should be reported as metal rather than as the ceramic it sits in. r13 rejects cracks on textile, because fabric tears instead of fracturing. Both near-misses get accepted, so each rule really needs both premises.
+My two rules: r12 rejects corrosion on ceramic, since corrosion is a metal thing. r13 rejects cracks on textile, since fabric tears instead of fracturing. Both near misses get accepted, so each rule needs both premises.
 
-Part E: a Horn clause can only say "if all of these facts hold, conclude this," so there is no way to say "and no damage_ fact is present," and severity_major on its own tells me nothing about what is missing. I would either have to_facts emit a no_damage fact for an empty list, which is cheap but bakes a closed-world assumption into the schema layer, or add real negation, which costs monotonicity: adding a fact could then retract a conclusion, so forward_chain needs a proper fixpoint strategy and my termination argument above stops holding.
+Part E: a Horn clause only says "if these facts hold, conclude this," so I cannot say "and no damage fact is present," and severity_major alone tells me nothing about what is missing. I would either have to_facts emit a no_damage fact for an empty list, which bakes a closed world assumption into the schema layer, or add real negation, which costs monotonicity and breaks the termination argument above.
 
-Backward chaining: backward_chain expands a goal into minimal fact sets, cutting cyclic branches and dropping any support that contains a smaller one. It produced a trigger for all six rejection goals, matching my hand-written reports except it picked different materials for none_but_damaged and rot_on_inorganic, so I had not missed a rule. Final batch is 13 reports at accepted=4 rejected=9, and the generated ones live in data/generated_reports.jsonl.
+Backward chaining: backward_chain expands a goal into minimal fact sets and found a trigger for all six rejection goals, so I had not missed a rule. Final batch is 13 reports at accepted=4 rejected=9, generated ones in data/generated_reports.jsonl.

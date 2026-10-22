@@ -20,9 +20,11 @@ Part E: a Horn clause only says "if these facts hold, conclude this," so I canno
 
 Backward chaining: backward_chain expands a goal into minimal fact sets and found a trigger for all six rejection goals, so I had not missed a rule. Final batch is 13 reports at accepted=4 rejected=9, generated ones in data/generated_reports.jsonl.
 
+Correction from Lab 5: those two numbers are the Lab 4 record, kept as it stood at the v0.4-validated tag. Lab 5 retired two of those rules, so the current repo has 4 rejection goals and the same 13 reports now give accepted=6 rejected=7.
+
 Lab 5 guesses, before I ran it: a-odd1 quarantine, since stone with corrosion breaks none of my rules but no reference report pairs them. a-odd2 and a-odd3 reject, because my own Lab 4 rules call corrosion on ceramic and cracks on textile impossible. a-bad1 reject on rot_on_inorganic, a-bad2 reject on schema since marble is not in the vocabulary.
 
-Lab 5 self check: both batches matched the handout exactly, at threshold -6.56 with 8 of the 400 reference reports below it, but only after I retired two of my own Lab 4 rules.
+Lab 5 self check: both batches matched the handout exactly, at threshold -6.56 with 8 of the 400 reference reports below it, but only after I retired two of my own Lab 4 rules. The one difference in the printed line is the severity_mix key that Part E asks me to add to batch_drift, which Part C's expected output predates; the summaries, the material_mix numbers and the threshold are byte-identical, and test_self_check_matches_the_handout_byte_for_byte asserts exactly that against the two frozen strings.
 
 Predictions: I was right on a-odd1, a-bad1 and a-bad2, and wrong on a-odd2 and a-odd3, which I expected my own custom rules to reject. The pipeline was right and my rules were wrong, because the reference data contains 6 textile reports with cracks, so crack_on_textile was calling trusted data impossible, and corroded ceramic is unusual rather than contradictory. Both rules were claims about rarity, which is this lab's job, so they moved out of the logic layer and the likelihood layer now catches those two at -8.92 and -9.24 instead.
 

@@ -1,7 +1,7 @@
 import hashlib, json, os, subprocess, sys, tempfile
 import pytest
 import make_data
-from quality import load, classify, run, batch_drift
+from quality import load, classify, main, run, batch_drift
 from report_model import DependentReportModel, ReportModel, calibrate
 from validate import validate
 
@@ -124,3 +124,35 @@ def test_dependent_model_stops_punishing_the_structural_pair_twice():
     assert dependent.log_likelihood(A["a-odd3"]) > MODEL.log_likelihood(A["a-odd3"])
     assert dependent.log_likelihood(A["a-odd3"]) < dependent_threshold   # still quarantined
     assert len(dependent.p_loose_base) == 10                             # 5 extra parameters
+
+# The two lines Part C froze, before Part E added severity_mix to batch_drift.
+HANDOUT_SELF_CHECK = [
+    ("data/incoming_a.jsonl",
+     '{"summary": {"accept": 100, "quarantine": 3, "reject": 2}, '
+     '"drift": {"material_mix": [5.28, 18.467, false]}, "threshold": -6.56}'),
+    ("data/incoming_b.jsonl",
+     '{"summary": {"accept": 100}, '
+     '"drift": {"material_mix": [155.24, 18.467, true]}, "threshold": -6.56}'),
+]
+
+@pytest.mark.parametrize("batch,expected", HANDOUT_SELF_CHECK)
+def test_self_check_matches_the_handout_byte_for_byte(batch, expected):
+    res = run(batch)
+    printed = {k: res[k] for k in ("summary", "drift", "threshold")}
+    # Part E's own key is the only addition; everything Part C specified must be identical.
+    printed["drift"] = {"material_mix": printed["drift"]["material_mix"]}
+    assert json.dumps(printed) == expected
+
+def test_quality_log_matches_the_handout_table(tmp_path, capsys):
+    log = tmp_path / "a.quality.log.jsonl"
+    main("data/incoming_a.jsonl", str(log))
+    capsys.readouterr()
+    rows = [json.loads(line) for line in log.read_text().splitlines()]
+    assert [(r["id"], r["verdict"]) for r in rows] == [
+        ("a-odd1", "quarantine"), ("a-odd2", "quarantine"), ("a-odd3", "quarantine"),
+        ("a-bad1", "reject"), ("a-bad2", "reject"),
+    ]
+    details = [r["detail"][0] for r in rows]
+    assert "-7.43" in details[0] and "-8.92" in details[1] and "-9.24" in details[2]
+    assert details[3] == "invalid:rot_on_inorganic"
+    assert "unknown material 'marble'" in details[4]

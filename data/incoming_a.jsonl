@@ -1,0 +1,105 @@
+{"id": "a001", "material": "textile", "damage": ["fading"], "severity": "minor"}
+{"id": "a002", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a003", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a004", "material": "stone", "damage": ["crack", "loose_base"], "severity": "major"}
+{"id": "a005", "material": "wood", "damage": ["fading", "rot"], "severity": "major"}
+{"id": "a006", "material": "metal", "damage": [], "severity": "none"}
+{"id": "a007", "material": "wood", "damage": ["rot"], "severity": "major"}
+{"id": "a008", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a009", "material": "textile", "damage": ["fading"], "severity": "minor"}
+{"id": "a010", "material": "metal", "damage": ["corrosion"], "severity": "minor"}
+{"id": "a011", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a012", "material": "wood", "damage": [], "severity": "none"}
+{"id": "a013", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a014", "material": "wood", "damage": ["rot"], "severity": "minor"}
+{"id": "a015", "material": "stone", "damage": ["loose_base"], "severity": "minor"}
+{"id": "a016", "material": "wood", "damage": ["fading", "rot"], "severity": "minor"}
+{"id": "a017", "material": "stone", "damage": ["loose_base"], "severity": "major"}
+{"id": "a018", "material": "stone", "damage": ["crack"], "severity": "minor"}
+{"id": "a019", "material": "stone", "damage": ["crack"], "severity": "minor"}
+{"id": "a020", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a021", "material": "wood", "damage": ["rot"], "severity": "minor"}
+{"id": "a022", "material": "wood", "damage": ["crack"], "severity": "major"}
+{"id": "a023", "material": "stone", "damage": ["fading"], "severity": "minor"}
+{"id": "a024", "material": "stone", "damage": ["crack", "loose_base"], "severity": "major"}
+{"id": "a025", "material": "textile", "damage": ["fading", "rot"], "severity": "minor"}
+{"id": "a026", "material": "wood", "damage": [], "severity": "none"}
+{"id": "a027", "material": "stone", "damage": ["loose_base"], "severity": "minor"}
+{"id": "a028", "material": "stone", "damage": ["crack"], "severity": "minor"}
+{"id": "a029", "material": "textile", "damage": ["fading"], "severity": "minor"}
+{"id": "a030", "material": "ceramic", "damage": ["fading"], "severity": "minor"}
+{"id": "a031", "material": "textile", "damage": [], "severity": "none"}
+{"id": "a032", "material": "metal", "damage": ["corrosion"], "severity": "minor"}
+{"id": "a033", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a034", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a035", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a036", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a037", "material": "metal", "damage": ["corrosion"], "severity": "major"}
+{"id": "a038", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a039", "material": "wood", "damage": ["crack", "rot"], "severity": "minor"}
+{"id": "a040", "material": "textile", "damage": ["fading"], "severity": "minor"}
+{"id": "a041", "material": "ceramic", "damage": ["crack"], "severity": "minor"}
+{"id": "a042", "material": "stone", "damage": ["crack"], "severity": "minor"}
+{"id": "a043", "material": "metal", "damage": ["fading"], "severity": "minor"}
+{"id": "a044", "material": "wood", "damage": [], "severity": "none"}
+{"id": "a045", "material": "metal", "damage": ["fading"], "severity": "minor"}
+{"id": "a046", "material": "metal", "damage": [], "severity": "none"}
+{"id": "a047", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a048", "material": "wood", "damage": ["crack"], "severity": "minor"}
+{"id": "a049", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a050", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a051", "material": "stone", "damage": ["fading"], "severity": "minor"}
+{"id": "a052", "material": "wood", "damage": ["crack", "rot"], "severity": "major"}
+{"id": "a053", "material": "stone", "damage": ["loose_base", "fading"], "severity": "minor"}
+{"id": "a054", "material": "wood", "damage": ["rot"], "severity": "minor"}
+{"id": "a055", "material": "stone", "damage": ["loose_base"], "severity": "minor"}
+{"id": "a056", "material": "wood", "damage": ["fading", "rot"], "severity": "major"}
+{"id": "a057", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a058", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a059", "material": "textile", "damage": ["fading"], "severity": "minor"}
+{"id": "a060", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a061", "material": "wood", "damage": ["rot"], "severity": "minor"}
+{"id": "a062", "material": "stone", "damage": ["loose_base"], "severity": "minor"}
+{"id": "a063", "material": "stone", "damage": ["loose_base"], "severity": "major"}
+{"id": "a064", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a065", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a066", "material": "wood", "damage": ["rot"], "severity": "major"}
+{"id": "a067", "material": "metal", "damage": [], "severity": "none"}
+{"id": "a068", "material": "textile", "damage": ["fading"], "severity": "minor"}
+{"id": "a069", "material": "ceramic", "damage": ["crack"], "severity": "minor"}
+{"id": "a070", "material": "textile", "damage": ["fading"], "severity": "major"}
+{"id": "a071", "material": "wood", "damage": ["fading"], "severity": "minor"}
+{"id": "a072", "material": "metal", "damage": ["corrosion"], "severity": "minor"}
+{"id": "a073", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a074", "material": "metal", "damage": ["corrosion"], "severity": "major"}
+{"id": "a075", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a076", "material": "wood", "damage": ["rot"], "severity": "minor"}
+{"id": "a077", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a078", "material": "textile", "damage": ["fading"], "severity": "minor"}
+{"id": "a079", "material": "textile", "damage": [], "severity": "none"}
+{"id": "a080", "material": "stone", "damage": ["loose_base", "fading"], "severity": "major"}
+{"id": "a081", "material": "metal", "damage": ["crack"], "severity": "minor"}
+{"id": "a082", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a083", "material": "textile", "damage": [], "severity": "none"}
+{"id": "a084", "material": "ceramic", "damage": ["crack", "fading"], "severity": "major"}
+{"id": "a085", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a086", "material": "textile", "damage": [], "severity": "none"}
+{"id": "a087", "material": "ceramic", "damage": ["crack"], "severity": "major"}
+{"id": "a088", "material": "metal", "damage": ["corrosion"], "severity": "major"}
+{"id": "a089", "material": "metal", "damage": ["loose_base", "corrosion"], "severity": "major"}
+{"id": "a090", "material": "metal", "damage": ["corrosion"], "severity": "major"}
+{"id": "a091", "material": "wood", "damage": ["fading", "rot"], "severity": "minor"}
+{"id": "a092", "material": "metal", "damage": ["corrosion"], "severity": "minor"}
+{"id": "a093", "material": "stone", "damage": [], "severity": "none"}
+{"id": "a094", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a095", "material": "wood", "damage": ["crack", "fading", "rot"], "severity": "major"}
+{"id": "a096", "material": "metal", "damage": [], "severity": "none"}
+{"id": "a097", "material": "ceramic", "damage": [], "severity": "none"}
+{"id": "a098", "material": "ceramic", "damage": ["crack"], "severity": "minor"}
+{"id": "a099", "material": "wood", "damage": ["crack"], "severity": "minor"}
+{"id": "a100", "material": "stone", "damage": ["fading"], "severity": "minor"}
+{"id": "a-odd1", "material": "stone", "damage": ["corrosion"], "severity": "minor"}
+{"id": "a-odd2", "material": "ceramic", "damage": ["crack", "fading", "corrosion"], "severity": "major"}
+{"id": "a-odd3", "material": "textile", "damage": ["crack", "loose_base"], "severity": "major"}
+{"id": "a-bad1", "material": "stone", "damage": ["rot"], "severity": "minor"}
+{"id": "a-bad2", "material": "marble", "damage": ["crack"], "severity": "minor"}

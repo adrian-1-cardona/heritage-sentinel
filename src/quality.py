@@ -4,7 +4,8 @@ from validate import validate
 from report_model import ReportModel, calibrate
 from prob import chi_square
 
-CHI2_CRIT_001 = {4: 18.467}   # chi-square critical value at p = 0.001, df = 4 (five materials)
+# Chi-square critical values at p = 0.001: df 4 for five materials, df 2 for three severities.
+CHI2_CRIT_001 = {2: 13.816, 4: 18.467}
 
 def load(path):
     with open(path) as f:
@@ -23,11 +24,18 @@ def classify(report, model, threshold):
         ]
     return "accept", []
 
+# One batch can drift in what it is made of, in how bad it is, or in either alone.
 def batch_drift(reports, model):
     """Batch-level check. Returns {check_name: (statistic, critical_value, drifted)}."""
-    mat = Counter(r["material"] for r in reports)
-    s = chi_square(mat, model.p_material)
-    return {"material_mix": (round(s, 2), CHI2_CRIT_001[4], s > CHI2_CRIT_001[4])}
+    checks = {
+        "material_mix": (Counter(r["material"] for r in reports), model.p_material, 4),
+        "severity_mix": (Counter(r["severity"] for r in reports), model.p_severity_mix, 2),
+    }
+    drift = {}
+    for name, (observed, expected, df) in checks.items():
+        s = chi_square(observed, expected)
+        drift[name] = (round(s, 2), CHI2_CRIT_001[df], s > CHI2_CRIT_001[df])
+    return drift
 
 def run(batch_path, reference_path="data/reference.jsonl", q=0.02):
     ref = load(reference_path)

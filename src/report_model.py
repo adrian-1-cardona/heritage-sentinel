@@ -24,6 +24,8 @@ class ReportModel:
         self.p_severity = fit_conditional(
             [(bucket(len(r["damage"])), r["severity"]) for r in reports],
             [0, 1, 2], SEVERITIES, alpha)
+        # Marginal severity mix, for batch checks only. log_likelihood uses p_severity.
+        self.p_severity_mix = fit_categorical([r["severity"] for r in reports], SEVERITIES, alpha)
 
     def log_likelihood(self, report):
         m = report["material"]

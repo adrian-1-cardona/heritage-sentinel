@@ -92,3 +92,26 @@ def test_pipeline_output_is_reproducible_across_processes():
                             os.devnull], capture_output=True, text=True, check=True).stdout
             for _ in range(2)]
     assert runs[0] == runs[1]
+
+def test_severity_drift_alone_is_caught():
+    clean = make_data.make_batch(200, 100, "e", make_data.MATERIAL_P)
+    relabelled, flips = [], 0
+    for r in clean:
+        if r["severity"] == "minor" and flips < 20:
+            relabelled.append({**r, "severity": "major"})
+            flips += 1
+        else:
+            relabelled.append(r)
+    assert flips == 20
+    assert all(validate(r)[0] for r in relabelled)   # calling minor damage major breaks no rule
+    drift = batch_drift(relabelled, MODEL)
+    assert drift["severity_mix"][2] is True
+    assert drift["material_mix"][2] is False         # nothing about the materials moved
+
+def test_clean_batches_rarely_raise_severity_alarms():
+    assert batch_drift(make_data.make_batch(200, 100, "e", make_data.MATERIAL_P),
+                       MODEL)["severity_mix"][2] is False
+    alarms = sum(
+        batch_drift(make_data.make_batch(s, 100, "c", make_data.MATERIAL_P), MODEL)["severity_mix"][2]
+        for s in range(100, 150))
+    assert alarms <= 1

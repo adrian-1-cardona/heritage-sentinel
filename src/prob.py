@@ -19,9 +19,15 @@ def fit_conditional(pairs, parent_domain, child_domain, alpha=1.0):
     return {p: fit_categorical(by_parent[p], child_domain, alpha) for p in parent_domain}
 
 
+# Compare a whole batch against expected proportions, not one record at a time.
 def chi_square(observed_counts, expected_probs):
     """Pearson chi-square statistic comparing observed counts to expected probabilities."""
-    ...
+    n = sum(observed_counts.values())
+    statistic = 0.0
+    for category, probability in expected_probs.items():
+        expected = n * probability
+        statistic += (observed_counts.get(category, 0) - expected) ** 2 / expected
+    return statistic
 
 
 def percentile(values, q):

@@ -185,9 +185,10 @@ def test_no_rule_rejects_the_reference_data():
     assert all(validate(json.loads(line))[0] for line in reference.splitlines())
 
 
-# Domain vocabulary belongs to the knowledge base, never the inference engine.
-def test_logic_has_no_heritage_vocabulary():
-    source = (Path(__file__).resolve().parents[1] / "src/logic.py").read_text()
+# Domain vocabulary belongs to the knowledge base, never a reusable engine.
+@pytest.mark.parametrize("module", ["src/logic.py", "src/prob.py"])
+def test_generic_modules_have_no_heritage_vocabulary(module):
+    source = (Path(__file__).resolve().parents[1] / module).read_text()
     words = set(re.findall(r"[A-Za-z]+", source))
     assert not words & (MATERIALS | DAMAGE | SEVERITIES)
 

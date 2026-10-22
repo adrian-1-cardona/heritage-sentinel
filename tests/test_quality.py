@@ -37,6 +37,12 @@ def test_unseen_combination_scores_finite():
     ll = MODEL.log_likelihood(A["a-odd1"])           # stone + corrosion never occurs in reference
     assert ll == ll and ll > -100                    # not NaN, not -inf
 
+def test_without_smoothing_unseen_combination_blows_up():
+    unsmoothed = ReportModel(REF, alpha=0.0)
+    assert unsmoothed.p_damage["corrosion"]["stone"][True] == 0.0
+    with pytest.raises(ValueError, match="math domain error"):
+        unsmoothed.log_likelihood(A["a-odd1"])
+
 def test_batch_a_summary():
     res = run("data/incoming_a.jsonl")
     assert res["summary"] == {"accept": 100, "quarantine": 3, "reject": 2}

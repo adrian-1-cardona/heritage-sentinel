@@ -58,6 +58,15 @@ def test_drifted_batch_passes_every_record_check_but_fails_the_batch_check():
     statistic, critical, drifted = res["drift"]["material_mix"]
     assert drifted is True and statistic > critical
 
+def test_heldout_quarantine_rate_is_near_target():
+    # A band, not an equality: these 2000 reports are a fresh sample, so the rate is a
+    # random quantity that only has to land near the 2% the threshold was calibrated for.
+    scores = [MODEL.log_likelihood(r)
+              for seed in range(100, 120)
+              for r in make_data.make_batch(seed, 100, "h", make_data.MATERIAL_P)]
+    rate = sum(s < THRESHOLD for s in scores) / len(scores)
+    assert 0.005 <= rate <= 0.04
+
 def test_clean_batches_rarely_raise_drift_alarms():
     alarms = sum(
         batch_drift(make_data.make_batch(s, 100, "c", make_data.MATERIAL_P), MODEL)["material_mix"][2]

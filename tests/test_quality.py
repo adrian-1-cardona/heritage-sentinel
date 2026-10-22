@@ -48,6 +48,16 @@ def test_batch_a_summary():
     assert res["summary"] == {"accept": 100, "quarantine": 3, "reject": 2}
     assert res["drift"]["material_mix"][2] is False
 
+def test_drifted_batch_passes_every_record_check_but_fails_the_batch_check():
+    res = run("data/incoming_b.jsonl")
+    # Half one: no record is suspicious on its own, so neither gate fires on any of them.
+    assert res["summary"] == {"accept": 100}
+    assert all(classify(r, MODEL, THRESHOLD) == ("accept", [])
+               for r in load("data/incoming_b.jsonl"))
+    # Half two: the mix of those same 100 records is still wrong.
+    statistic, critical, drifted = res["drift"]["material_mix"]
+    assert drifted is True and statistic > critical
+
 def test_clean_batches_rarely_raise_drift_alarms():
     alarms = sum(
         batch_drift(make_data.make_batch(s, 100, "c", make_data.MATERIAL_P), MODEL)["material_mix"][2]

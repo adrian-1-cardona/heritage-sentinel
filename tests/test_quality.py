@@ -73,6 +73,20 @@ def test_clean_batches_rarely_raise_drift_alarms():
         for s in range(100, 150))
     assert alarms <= 1
 
+def test_data_generation_is_deterministic():
+    def generate_into_fresh_directory():
+        with tempfile.TemporaryDirectory() as out:
+            subprocess.run([sys.executable, "tools/make_data.py", out], check=True)
+            digests = {}
+            for name in sorted(os.listdir(out)):
+                with open(os.path.join(out, name), "rb") as written:
+                    digests[name] = hashlib.sha256(written.read()).hexdigest()
+            return digests
+
+    first, second = generate_into_fresh_directory(), generate_into_fresh_directory()
+    assert set(first) == {"reference.jsonl", "incoming_a.jsonl", "incoming_b.jsonl"}
+    assert first == second
+
 def test_pipeline_output_is_reproducible_across_processes():
     runs = [subprocess.run([sys.executable, "src/quality.py", "data/incoming_a.jsonl",
                             os.devnull], capture_output=True, text=True, check=True).stdout

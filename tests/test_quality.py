@@ -2,7 +2,7 @@ import hashlib, json, os, subprocess, sys, tempfile
 import pytest
 import make_data
 from quality import load, classify, run, batch_drift
-from report_model import ReportModel, calibrate
+from report_model import DependentReportModel, ReportModel, calibrate
 from validate import validate
 
 REF = load("data/reference.jsonl")
@@ -115,3 +115,12 @@ def test_clean_batches_rarely_raise_severity_alarms():
         batch_drift(make_data.make_batch(s, 100, "c", make_data.MATERIAL_P), MODEL)["severity_mix"][2]
         for s in range(100, 150))
     assert alarms <= 1
+
+def test_dependent_model_stops_punishing_the_structural_pair_twice():
+    dependent = DependentReportModel(REF)
+    dependent_threshold = calibrate(dependent, REF, 0.02)
+    # The reference has cracked textiles with sound bases, so conditioning loose_base on
+    # crack costs a-odd3 far less than the material-only marginal did.
+    assert dependent.log_likelihood(A["a-odd3"]) > MODEL.log_likelihood(A["a-odd3"])
+    assert dependent.log_likelihood(A["a-odd3"]) < dependent_threshold   # still quarantined
+    assert len(dependent.p_loose_base) == 10                             # 5 extra parameters

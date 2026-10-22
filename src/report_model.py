@@ -40,3 +40,27 @@ def calibrate(model, reference_reports, q=0.02):
     """Threshold below which a report is 'improbable': the q-th percentile of the
     log-likelihoods of the trusted reference data itself."""
     return percentile([model.log_likelihood(r) for r in reference_reports], q)
+
+
+# Stretch goal. The pipeline keeps using ReportModel; this one exists to be compared against.
+class DependentReportModel(ReportModel):
+    """Drops one independence assumption: loose_base depends on crack as well as on the
+    material, so the pair that Lab 4 calls a structural risk is modelled as a pair."""
+
+    PARENTS = [(m, cracked) for m in MATERIALS for cracked in (True, False)]
+
+    def __init__(self, reports, alpha=1.0):
+        super().__init__(reports, alpha)
+        self.p_loose_base = fit_conditional(
+            [((r["material"], "crack" in r["damage"]), "loose_base" in r["damage"])
+             for r in reports],
+            self.PARENTS, [True, False], alpha)
+
+    def log_likelihood(self, report):
+        m, damage = report["material"], report["damage"]
+        ll = math.log(self.p_material[m])
+        for d in DAMAGE:
+            if d != "loose_base":
+                ll += math.log(self.p_damage[d][m][d in damage])
+        ll += math.log(self.p_loose_base[(m, "crack" in damage)]["loose_base" in damage])
+        return ll + math.log(self.p_severity[bucket(len(damage))][report["severity"]])

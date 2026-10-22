@@ -1,0 +1,5 @@
+{"id": "a-odd1", "verdict": "quarantine", "detail": ["improbable: log-likelihood -7.43 < threshold -6.56"]}
+{"id": "a-odd2", "verdict": "quarantine", "detail": ["improbable: log-likelihood -8.92 < threshold -6.56"]}
+{"id": "a-odd3", "verdict": "quarantine", "detail": ["improbable: log-likelihood -9.24 < threshold -6.56"]}
+{"id": "a-bad1", "verdict": "reject", "detail": ["invalid:rot_on_inorganic"]}
+{"id": "a-bad2", "verdict": "reject", "detail": ["schema: unknown material 'marble'"]}

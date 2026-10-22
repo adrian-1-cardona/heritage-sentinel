@@ -44,8 +44,8 @@ CLAUSES = [
     rule("invalid:corrosion_on_organic", "damage_corrosion", "organic"),
     rule("invalid:none_but_damaged", "severity_none", "has_damage"),
     rule("invalid:structural_risk_marked_minor", "structural_risk", "severity_minor"),
-    # Corrosion describes a metal component, rather than a ceramic substrate.
-    rule("invalid:corrosion_on_ceramic", "damage_corrosion", "material_ceramic"),
-    # Flexible textile fibers tear; cracks describe a rigid material's fracture.
-    rule("invalid:crack_on_textile", "damage_crack", "material_textile"),
+    # Lab 4 also had invalid:corrosion_on_ceramic and invalid:crack_on_textile here.
+    # The Lab 5 reference data contains cracked textiles, so that rule called 6 trusted
+    # reports impossible, and corroded ceramic is unusual rather than contradictory.
+    # Both claims were about rarity, so they belong to the likelihood layer in quality.py.
 ]

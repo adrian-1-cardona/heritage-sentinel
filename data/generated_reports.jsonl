@@ -1,6 +1,4 @@
-{"goal": "invalid:corrosion_on_ceramic", "id": "generated-corrosion_on_ceramic", "material": "ceramic", "damage": ["corrosion"], "severity": "minor"}
 {"goal": "invalid:corrosion_on_organic", "id": "generated-corrosion_on_organic", "material": "textile", "damage": ["corrosion"], "severity": "minor"}
-{"goal": "invalid:crack_on_textile", "id": "generated-crack_on_textile", "material": "textile", "damage": ["crack"], "severity": "minor"}
 {"goal": "invalid:none_but_damaged", "id": "generated-none_but_damaged", "material": "stone", "damage": ["corrosion"], "severity": "none"}
 {"goal": "invalid:rot_on_inorganic", "id": "generated-rot_on_inorganic", "material": "ceramic", "damage": ["rot"], "severity": "minor"}
 {"goal": "invalid:structural_risk_marked_minor", "id": "generated-structural_risk_marked_minor", "material": "stone", "damage": ["crack", "loose_base"], "severity": "minor"}

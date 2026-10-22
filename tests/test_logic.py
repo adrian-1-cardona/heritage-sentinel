@@ -173,20 +173,16 @@ def test_alternative_proofs_depend_on_clause_order():
     assert explain("goal", reversed_why) == ["goal  because:", "  b  (given)"]
 
 
-# Require both custom-rule premises; either changed field is a valid near-miss.
-def test_corrosion_on_ceramic_rule_and_near_misses():
-    report = REPORTS["r12"]
-    assert validate(report)[1] == ["invalid:corrosion_on_ceramic"]
-    assert validate({**report, "material": "metal"}) == (True, [], {})
-    assert validate({**report, "damage": ["fading"]}) == (True, [], {})
+# Corroded ceramic and cracked textile are rare, not impossible, so no rule may reject them.
+@pytest.mark.parametrize("rid", ["r12", "r13"])
+def test_retired_rarity_rules_accept_their_old_targets(rid):
+    assert validate(REPORTS[rid]) == (True, [], {})
 
 
-# Changing either the textile material or fracture damage avoids this constraint.
-def test_crack_on_textile_rule_and_near_misses():
-    report = REPORTS["r13"]
-    assert validate(report)[1] == ["invalid:crack_on_textile"]
-    assert validate({**report, "material": "stone"}) == (True, [], {})
-    assert validate({**report, "damage": ["fading"]}) == (True, [], {})
+# A hard constraint may never contradict the trusted reference data it is checked against.
+def test_no_rule_rejects_the_reference_data():
+    reference = (Path(__file__).resolve().parents[1] / "data/reference.jsonl").read_text()
+    assert all(validate(json.loads(line))[0] for line in reference.splitlines())
 
 
 # Domain vocabulary belongs to the knowledge base, never the inference engine.

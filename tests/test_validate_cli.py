@@ -66,7 +66,7 @@ def test_final_log_is_reproducible(tmp_path):
             env={**os.environ, "PYTHONHASHSEED": seed},
             capture_output=True, text=True, check=True, timeout=5,
         )
-        assert result.stdout == "accepted=4 rejected=9\n"
+        assert result.stdout == "accepted=6 rejected=7\n"
         assert log.read_text() == expected
 
 

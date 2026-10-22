@@ -68,9 +68,9 @@ def test_generator_reports_impossible_goal():
 def test_generated_jsonl_is_valid_input(tmp_path, capsys):
     output = tmp_path / "generated.jsonl"
     main(output)
-    assert capsys.readouterr().out == "generated=6\n"
+    assert capsys.readouterr().out == f"generated={len(GOALS)}\n"
     reports = [json.loads(line) for line in output.read_text().splitlines()]
-    assert len(reports) == 6
+    assert len(reports) == len(GOALS)
     for report in reports:
         to_facts(report)
         assert report["goal"] in validate(report)[1]

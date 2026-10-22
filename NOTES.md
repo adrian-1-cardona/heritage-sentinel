@@ -21,3 +21,11 @@ Part E: a Horn clause only says "if these facts hold, conclude this," so I canno
 Backward chaining: backward_chain expands a goal into minimal fact sets and found a trigger for all six rejection goals, so I had not missed a rule. Final batch is 13 reports at accepted=4 rejected=9, generated ones in data/generated_reports.jsonl.
 
 Lab 5 guesses, before I ran it: a-odd1 quarantine, since stone with corrosion breaks none of my rules but no reference report pairs them. a-odd2 and a-odd3 reject, because my own Lab 4 rules call corrosion on ceramic and cracks on textile impossible. a-bad1 reject on rot_on_inorganic, a-bad2 reject on schema since marble is not in the vocabulary.
+
+Lab 5 self check: both batches matched the handout exactly, at threshold -6.56 with 8 of the 400 reference reports below it, but only after I retired two of my own Lab 4 rules.
+
+Predictions: I was right on a-odd1, a-bad1 and a-bad2, and wrong on a-odd2 and a-odd3, which I expected my own custom rules to reject. The pipeline was right and my rules were wrong, because the reference data contains 6 textile reports with cracks, so crack_on_textile was calling trusted data impossible, and corroded ceramic is unusual rather than contradictory. Both rules were claims about rarity, which is this lab's job, so they moved out of the logic layer and the likelihood layer now catches those two at -8.92 and -9.24 instead.
+
+Independence: given the material, the model treats crack and loose_base as unrelated, but a base that has come loose puts the object under exactly the stress that cracks it, so the pair turns up more often than the product of its two rates. That is the same pair my Lab 4 structural_risk rule was written for, so the model charges a-odd3 for both surprises separately and scores it lower than it deserves.
+
+Parameters: 4 for P(material), 25 for the five Bernoulli damage tables across five materials, and 6 for P(severity | bucket), which is 35. 400 reports is enough because the thinnest material, textile, still has 37 rows to estimate its 5 damage rates from. With 40 reports textile would get about 4, so every textile probability would be mostly whatever alpha says, and I would then calibrate a threshold against that noise and call it data.

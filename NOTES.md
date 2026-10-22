@@ -19,3 +19,5 @@ My two rules: r12 rejects corrosion on ceramic, since corrosion is a metal thing
 Part E: a Horn clause only says "if these facts hold, conclude this," so I cannot say "and no damage fact is present," and severity_major alone tells me nothing about what is missing. I would either have to_facts emit a no_damage fact for an empty list, which bakes a closed world assumption into the schema layer, or add real negation, which costs monotonicity and breaks the termination argument above.
 
 Backward chaining: backward_chain expands a goal into minimal fact sets and found a trigger for all six rejection goals, so I had not missed a rule. Final batch is 13 reports at accepted=4 rejected=9, generated ones in data/generated_reports.jsonl.
+
+Lab 5 guesses, before I ran it: a-odd1 quarantine, since stone with corrosion breaks none of my rules but no reference report pairs them. a-odd2 and a-odd3 reject, because my own Lab 4 rules call corrosion on ceramic and cracks on textile impossible. a-bad1 reject on rot_on_inorganic, a-bad2 reject on schema since marble is not in the vocabulary.
